@@ -1,0 +1,17 @@
+{% extends "login/base.html" %}
+{% block title %}Editar Perfil{% endblock %}
+{% block content %}
+  <h2>Editar Perfil</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ u_form.as_p }} {{ p_form.as_p }}
+    <button name="update_profile" type="submit">Salvar Alterações</button>
+  </form>
+
+  <h3>Alterar Senha</h3>
+  <form method="post">
+    {% csrf_token %}
+    {{ pwd_form.as_p }}
+    <button name="change_password" type="submit">Mudar Senha</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,28 @@
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Meu Site{% endblock %}</title>
+
+
+  <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
+</head>
+<body>
+  <nav>
+    {% if user.is_authenticated %}
+      Olá, {{ user.username }} |
+      <a href="{% url 'login:logout' %}">Sair</a> |
+      <a href="{% url 'login:profile_edit' %}">Meu Perfil</a>
+    {% endif %}
+  </nav>
+  <div class="container">
+    {% for msg in messages %}
+      <div class="message {{ msg.tags }}">{{ msg }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

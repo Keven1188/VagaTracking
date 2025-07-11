@@ -1,1 +1,68 @@
-Ninja lego
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vagas Disponíveis</title>
+    <link rel="stylesheet" href="vagas.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1>Vagas Disponíveis</h1>
+
+
+        <input type="text" id="busca" placeholder="Buscar vaga por título..." oninput="filtrarVagas()" />
+
+
+        <select id="filtroArea" onchange="filtrarVagas()">
+            <option value="">Todas as áreas</option>
+            <option value="Desenvolvimento">Desenvolvimento</option>
+            <option value="Design">Design</option>
+            <option value="Dados">Dados</option>
+        </select>
+
+
+        <div id="vagas-lista" class="vagas-grid"></div>
+
+
+        <div id="detalhes-vaga" class="oculto">
+            <h2 id="titulo-vaga"></h2>
+            <p id="descricao-vaga"></p>
+            <ul id="requisitos-vaga"></ul>
+            <button onclick="abrirModal()">Candidatar-se</button>
+        </div>
+    </div>
+
+    <div id="modal" class="modal oculto">
+        <div class="modal-conteudo">
+            <span class="fechar" onclick="fecharModal()">&times;</span>
+            <h3>Candidatura à Vaga</h3>
+            <form onsubmit="enviarFormulario(event)" class="form-linkedin">
+                <label>Nome completo</label>
+                <input type="text" placeholder="Ex: João da Silva" required />
+
+
+                <label>Email profissional</label>
+                <input type="email" placeholder="Ex: joao@email.com" required />
+
+
+                <label>LinkedIn (opcional)</label>
+                <input type="url" placeholder="https://linkedin.com/in/seu-nome" />
+
+
+                <label>Mensagem</label>
+                <textarea placeholder="Fale um pouco sobre você e por que deseja essa vaga" required></textarea>
+
+
+                <button type="submit">Enviar candidatura</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="vagas.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Candidatos - Processo Seletivo</title>
+  <link rel="stylesheet" href="assets/candidatos.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>🎯 Lista de Candidatos</h1>
+
+    <div class="filtros">
+      <input type="text" id="busca-nome" placeholder="🔍 Buscar por nome...">
+
+      <select id="filtro-vaga">
+        <option value="">📂 Todas as Vagas</option>
+      </select>
+
+      <select id="filtro-status">
+        <option value="">📌 Todos os Status</option>
+        <option value="Em análise">Em análise</option>
+        <option value="Entrevista marcada">Entrevista marcada</option>
+        <option value="Aprovado">Aprovado</option>
+      </select>
+
+      <button id="limpar-filtros">Limpar Filtros</button>
+    </div>
+
+    <div id="candidatos-lista" class="lista-candidatos">
+      <!-- Cards via JS -->
+    </div>
+  </div>
+
+  <script src="assets/candidatos.js"></script>
+</body>
+</html>

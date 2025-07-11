@@ -1,38 +1,202 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Candidatos - Processo Seletivo</title>
-  <link rel="stylesheet" href="assets/candidatos.css">
-</head>
-<body>
+{% extends "login/base.html" %}
+{% load static %}
 
-  <div class="container">
-    <h1>🎯 Lista de Candidatos</h1>
+{% block title %}Candidatos - Processo Seletivo{% endblock %}
 
-    <div class="filtros">
-      <input type="text" id="busca-nome" placeholder="🔍 Buscar por nome...">
+{% block content %}
+<script>
+document.body.classList.add('page-layout');
+</script>
 
-      <select id="filtro-vaga">
+<h1>🎯 Lista de Candidatos</h1>
+
+<div class="filtros">
+    <input type="text" id="busca-nome" placeholder="🔍 Buscar por nome..." oninput="filtrarCandidatos()" />
+
+    <select id="filtro-vaga" onchange="filtrarCandidatos()">
         <option value="">📂 Todas as Vagas</option>
-      </select>
+        <option value="Desenvolvedor Frontend React">Desenvolvedor Frontend React</option>
+        <option value="Designer UX/UI">Designer UX/UI</option>
+        <option value="Analista de Dados">Analista de Dados</option>
+        <option value="Desenvolvedor Backend Node.js">Desenvolvedor Backend Node.js</option>
+    </select>
 
-      <select id="filtro-status">
+    <select id="filtro-status" onchange="filtrarCandidatos()">
         <option value="">📌 Todos os Status</option>
         <option value="Em análise">Em análise</option>
         <option value="Entrevista marcada">Entrevista marcada</option>
         <option value="Aprovado">Aprovado</option>
-      </select>
+    </select>
 
-      <button id="limpar-filtros">Limpar Filtros</button>
-    </div>
+    <button id="limpar-filtros" onclick="limparFiltros()">Limpar Filtros</button>
+</div>
 
-    <div id="candidatos-lista" class="lista-candidatos">
-      <!-- Cards via JS -->
-    </div>
-  </div>
+<div id="candidatos-lista" class="lista-candidatos">
+    <!-- Cards serão gerados via JavaScript -->
+</div>
 
-  <script src="assets/candidatos.js"></script>
-</body>
-</html>
+<script>
+// Dados de exemplo dos candidatos
+const candidatos = [
+    {
+        id: 1,
+        nome: "Ana Silva",
+        email: "ana.silva@email.com",
+        vaga: "Desenvolvedor Frontend React",
+        status: "Em análise",
+        linkedin: "https://linkedin.com/in/ana-silva",
+        dataCandidatura: "2025-01-05"
+    },
+    {
+        id: 2,
+        nome: "Carlos Santos",
+        email: "carlos.santos@email.com",
+        vaga: "Designer UX/UI",
+        status: "Entrevista marcada",
+        linkedin: "https://linkedin.com/in/carlos-santos",
+        dataCandidatura: "2025-01-03"
+    },
+    {
+        id: 3,
+        nome: "Maria Oliveira",
+        email: "maria.oliveira@email.com",
+        vaga: "Analista de Dados",
+        status: "Aprovado",
+        linkedin: "https://linkedin.com/in/maria-oliveira",
+        dataCandidatura: "2025-01-01"
+    },
+    {
+        id: 4,
+        nome: "João Pereira",
+        email: "joao.pereira@email.com",
+        vaga: "Desenvolvedor Backend Node.js",
+        status: "Em análise",
+        linkedin: "https://linkedin.com/in/joao-pereira",
+        dataCandidatura: "2025-01-07"
+    },
+    {
+        id: 5,
+        nome: "Fernanda Costa",
+        email: "fernanda.costa@email.com",
+        vaga: "Desenvolvedor Frontend React",
+        status: "Entrevista marcada",
+        linkedin: "https://linkedin.com/in/fernanda-costa",
+        dataCandidatura: "2025-01-06"
+    },
+    {
+        id: 6,
+        nome: "Roberto Lima",
+        email: "roberto.lima@email.com",
+        vaga: "Designer UX/UI",
+        status: "Em análise",
+        linkedin: "https://linkedin.com/in/roberto-lima",
+        dataCandidatura: "2025-01-04"
+    }
+];
+
+// Função para renderizar candidatos
+function renderizarCandidatos(candidatosFiltrados = candidatos) {
+    const container = document.getElementById('candidatos-lista');
+    
+    if (candidatosFiltrados.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 2rem;">Nenhum candidato encontrado.</p>';
+        return;
+    }
+    
+    container.innerHTML = candidatosFiltrados.map(candidato => `
+        <div class="candidato-card">
+            <div class="candidato-info">
+                <h3>${candidato.nome}</h3>
+                <div class="email">${candidato.email}</div>
+                <div class="vaga">${candidato.vaga}</div>
+                <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.5rem;">
+                    Candidatura: ${formatarData(candidato.dataCandidatura)}
+                </div>
+            </div>
+            <div class="candidato-status">
+                <span class="status-badge ${getStatusClass(candidato.status)}">${candidato.status}</span>
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                    <button onclick="verLinkedIn('${candidato.linkedin}')" style="padding: 0.25rem 0.75rem; font-size: 0.75rem; background: var(--secondary-color); width: auto; margin: 0;">
+                        LinkedIn
+                    </button>
+                    <button onclick="alterarStatus(${candidato.id})" style="padding: 0.25rem 0.75rem; font-size: 0.75rem; background: var(--success-color); width: auto; margin: 0;">
+                        Alterar Status
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Função para obter classe CSS do status
+function getStatusClass(status) {
+    switch(status) {
+        case 'Em análise': return 'em-analise';
+        case 'Entrevista marcada': return 'entrevista';
+        case 'Aprovado': return 'aprovado';
+        default: return 'em-analise';
+    }
+}
+
+// Função para formatar data
+function formatarData(dataString) {
+    const data = new Date(dataString);
+    return data.toLocaleDateString('pt-BR');
+}
+
+// Função para filtrar candidatos
+function filtrarCandidatos() {
+    const busca = document.getElementById('busca-nome').value.toLowerCase();
+    const vaga = document.getElementById('filtro-vaga').value;
+    const status = document.getElementById('filtro-status').value;
+    
+    const candidatosFiltrados = candidatos.filter(candidato => {
+        const matchNome = candidato.nome.toLowerCase().includes(busca);
+        const matchVaga = !vaga || candidato.vaga === vaga;
+        const matchStatus = !status || candidato.status === status;
+        return matchNome && matchVaga && matchStatus;
+    });
+    
+    renderizarCandidatos(candidatosFiltrados);
+}
+
+// Função para limpar filtros
+function limparFiltros() {
+    document.getElementById('busca-nome').value = '';
+    document.getElementById('filtro-vaga').value = '';
+    document.getElementById('filtro-status').value = '';
+    renderizarCandidatos();
+}
+
+// Função para ver LinkedIn
+function verLinkedIn(url) {
+    window.open(url, '_blank');
+}
+
+// Função para alterar status
+function alterarStatus(id) {
+    const candidato = candidatos.find(c => c.id === id);
+    if (!candidato) return;
+    
+    const novoStatus = prompt(`Alterar status de ${candidato.nome}:\n\n1 - Em análise\n2 - Entrevista marcada\n3 - Aprovado\n\nDigite o número da opção:`);
+    
+    const statusMap = {
+        '1': 'Em análise',
+        '2': 'Entrevista marcada',
+        '3': 'Aprovado'
+    };
+    
+    if (statusMap[novoStatus]) {
+        candidato.status = statusMap[novoStatus];
+        renderizarCandidatos();
+        alert(`Status de ${candidato.nome} alterado para: ${candidato.status}`);
+    }
+}
+
+// Inicializar página
+document.addEventListener('DOMContentLoaded', function() {
+    renderizarCandidatos();
+});
+</script>
+{% endblock %}
+

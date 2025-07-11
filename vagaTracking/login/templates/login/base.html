@@ -14,8 +14,13 @@
   <nav>
     {% if user.is_authenticated %}
       Olá, {{ user.username }} |
-      <a href="{% url 'login:logout' %}">Sair</a> |
-      <a href="{% url 'login:profile_edit' %}">Meu Perfil</a>
+      <a href="{% url 'login:conta' %}">Minha Conta</a> |
+      <a href="{% url 'login:profile_edit' %}">Editar Perfil</a> |
+      {% if user.profile.role == 'RH' %}
+        <a href="{% url 'login:candidatos' %}">Candidatos</a> |
+      {% endif %}
+      <a href="{% url 'login:vagas' %}">Vagas</a> |
+      <a href="{% url 'login:logout' %}">Sair</a>
     {% endif %}
   </nav>
   <div class="container">

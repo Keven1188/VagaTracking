@@ -84,3 +84,19 @@ def profile_edit_view(request):
     
 def vagas_view(request):
     return render(request, 'login/vagas.html')
+
+@login_required
+def conta_view(request):
+    """View para exibir informações da conta do usuário"""
+    return render(request, 'login/conta.html')
+
+@login_required
+def candidatos_view(request):
+    """View para exibir lista de candidatos (apenas para RH)"""
+    # Verificar se o usuário é RH
+    if hasattr(request.user, 'profile') and request.user.profile.role == 'RH':
+        return render(request, 'login/candidatos.html')
+    else:
+        messages.error(request, "Acesso negado. Esta página é apenas para RH.")
+        return redirect('login:vagas')
+

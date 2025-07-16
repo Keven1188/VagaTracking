@@ -362,3 +362,459 @@ input:focus-visible, button:focus-visible, a:focus-visible, select:focus-visible
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-color);
 }
+
+
+/* ===== ESTILOS ESPECÍFICOS PARA PÁGINAS DE VAGAS E CANDIDATOS ===== */
+
+/* Layout para páginas com conteúdo extenso */
+body.page-layout {
+    display: block;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+}
+
+body.page-layout .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    animation: slideUp 0.6s ease-out;
+}
+
+/* Navegação superior */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
+}
+
+nav a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    margin: 0 1rem;
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    transition: width var(--transition-normal);
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+nav a:hover {
+    color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+/* Ajuste para conteúdo com navegação fixa */
+body.page-layout .container {
+    margin-top: 80px;
+}
+
+/* Títulos das páginas */
+h1 {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--text-primary);
+    font-size: 2.5rem;
+    font-weight: 700;
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    border-radius: 2px;
+}
+
+/* Filtros e busca */
+.filtros {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+}
+
+.filtros input[type="text"] {
+    flex: 1;
+    min-width: 250px;
+}
+
+.filtros select {
+    min-width: 180px;
+}
+
+.filtros button {
+    background: var(--error-color);
+    padding: 0.75rem 1.5rem;
+    white-space: nowrap;
+    margin-top: 0;
+    width: auto;
+}
+
+.filtros button:hover {
+    background: #dc2626;
+}
+
+/* Grid de vagas */
+.vagas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.vaga-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    transition: all var(--transition-normal);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.vaga-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+}
+
+.vaga-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-color);
+}
+
+.vaga-card h3 {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.vaga-card .area {
+    color: var(--primary-color);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+}
+
+.vaga-card .descricao {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.vaga-card .requisitos {
+    list-style: none;
+    padding: 0;
+}
+
+.vaga-card .requisitos li {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.vaga-card .requisitos li::before {
+    content: '•';
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+/* Lista de candidatos */
+.lista-candidatos {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.candidato-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    transition: all var(--transition-normal);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.candidato-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+}
+
+.candidato-info h3 {
+    color: var(--text-primary);
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.candidato-info .email {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.candidato-info .vaga {
+    color: var(--primary-color);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.candidato-status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-md);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.em-analise {
+    background: rgba(249, 115, 22, 0.2);
+    color: #f97316;
+    border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+.status-badge.entrevista {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.status-badge.aprovado {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+}
+
+.modal.ativo {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-conteudo {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-xl);
+    padding: 3rem;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.3s ease-out;
+}
+
+.modal-conteudo h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.fechar {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color var(--transition-normal);
+}
+
+.fechar:hover {
+    color: var(--error-color);
+}
+
+/* Textarea */
+textarea {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: all var(--transition-normal);
+    font-family: inherit;
+    resize: vertical;
+    min-height: 120px;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: var(--bg-tertiary);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+textarea::placeholder {
+    color: var(--text-muted);
+}
+
+/* Classes utilitárias */
+.oculto {
+    display: none !important;
+}
+
+.visivel {
+    display: block !important;
+}
+
+/* Mensagens de feedback */
+.message {
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius-lg);
+    margin-bottom: 1rem;
+    font-weight: 600;
+    border: 1px solid;
+}
+
+.message.success {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--success-color);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.message.error {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--error-color);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.message.warning {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--warning-color);
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+/* Responsividade para páginas extensas */
+@media (max-width: 768px) {
+    nav {
+        padding: 1rem;
+    }
+    
+    nav a {
+        margin: 0 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .filtros {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filtros input[type="text"],
+    .filtros select {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .vagas-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .candidato-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .candidato-status {
+        align-items: flex-start;
+        width: 100%;
+    }
+    
+    .modal-conteudo {
+        padding: 2rem;
+        margin: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body.page-layout .container {
+        padding: 1rem;
+        margin-top: 70px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .vaga-card,
+    .candidato-card {
+        padding: 1.5rem;
+    }
+}
+

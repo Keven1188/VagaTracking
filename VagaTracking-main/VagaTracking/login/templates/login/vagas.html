@@ -1,0 +1,184 @@
+{% extends "login/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/vagas.css' %}">
+{% endblock %}
+
+{% block title %}Vagas Disponíveis{% endblock %}
+
+{% block content %}
+<script>
+document.body.classList.add('page-layout');
+</script>
+
+<h1>Vagas Disponíveis</h1>
+
+<form method="get" class="filtros">
+    <input type="text" name="busca" placeholder="🔍 Buscar vaga por título..." value="{{ request.GET.busca }}">
+    <select name="area">
+        <option value="">Todas as áreas</option>
+        <option value="Desenvolvimento" {% if request.GET.area == "Desenvolvimento" %}selected{% endif %}>Desenvolvimento</option>
+        <option value="Design" {% if request.GET.area == "Design" %}selected{% endif %}>Design</option>
+        <option value="Dados" {% if request.GET.area == "Dados" %}selected{% endif %}>Dados</option>
+    </select>
+    <button type="submit">Filtrar</button>
+</form>
+
+<div id="vagas-lista" class="vagas-grid">
+    {% if vagas %}
+        {% for vaga in vagas %}
+            <div class="vaga-card">
+                <h3>{{ vaga.titulo }}</h3>
+                <div class="area">{{ vaga.area }}</div>
+                <p class="descricao">{{ vaga.descricao }}</p>
+                <ul class="requisitos">
+                    {% for req in vaga.requisitos.all|slice:":3" %}
+                        <li>{{ req.nome }}</li>
+                    {% endfor %}
+                    {% if vaga.requisitos.count > 3 %}
+                        <li>+ mais requisitos...</li>
+                    {% endif %}
+                </ul>
+                <button type="button" onclick="document.getElementById('detalhes-{{ vaga.id }}').classList.toggle('oculto')">Ver detalhes</button>
+            </div>
+            <div id="detalhes-{{ vaga.id }}" class="oculto detalhes-vaga">
+                <h2>{{ vaga.titulo }}</h2>
+                <p>{{ vaga.descricao }}</p>
+                <ul>
+                    {% for req in vaga.requisitos.all %}
+                        <li>{{ req.nome }}</li>
+                    {% endfor %}
+                </ul>
+                <button type="button" onclick="document.getElementById('modal-{{ vaga.id }}').classList.add('ativo');document.body.style.overflow='hidden'">Candidatar-se</button>
+            </div>
+            <div id="modal-{{ vaga.id }}" class="modal oculto">
+                <div class="modal-conteudo">
+                    <span class="fechar" onclick="document.getElementById('modal-{{ vaga.id }}').classList.remove('ativo');document.body.style.overflow='auto'">&times;</span>
+                    <h3>Candidatura à Vaga</h3>
+                    <form method="post" action="{% url 'candidatar_vaga' vaga.id %}" class="form-linkedin">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Nome completo</label>
+                            <input type="text" name="nome" placeholder="Ex: João da Silva" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Email profissional</label>
+                            <input type="email" name="email" placeholder="Ex: joao@email.com" required />
+                        </div>
+                        <div class="form-group">
+                            <label>LinkedIn (opcional)</label>
+                            <input type="url" name="linkedin" placeholder="https://linkedin.com/in/seu-nome" />
+                        </div>
+                        <div class="form-group">
+                            <label>Mensagem</label>
+                            <textarea name="mensagem" placeholder="Fale um pouco sobre você e por que deseja essa vaga" required></textarea>
+                        </div>
+                        <button type="submit">Enviar candidatura</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align: center; color: var(--text-muted); grid-column: 1 / -1;">Nenhuma vaga encontrada.</p>
+    {% endif %}
+</div>
+
+<script>
+// Apenas para fechar modais ao clicar fora
+document.addEventListener('click', function(e) {
+    document.querySelectorAll('.modal.ativo').forEach(function(modal) {
+        if (e.target === modal) {
+            modal.classList.remove('ativo');
+            document.body.style.overflow = 'auto';
+        }
+    });
+});
+</script>
+{% endblock %}
+{%block bota%}
+
+// Função para renderizar as vagas
+function renderizarVagas(vagasFiltradas = vagas) {
+    const container = document.getElementById('vagas-lista');
+    
+    if (vagasFiltradas.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: var(--text-muted); grid-column: 1 / -1;">Nenhuma vaga encontrada.</p>';
+        return;
+    }
+    
+    container.innerHTML = vagasFiltradas.map(vaga => `
+        <div class="vaga-card" onclick="mostrarDetalhes(${vaga.id})">
+            <h3>${vaga.titulo}</h3>
+            <div class="area">${vaga.area}</div>
+            <p class="descricao">${vaga.descricao}</p>
+            <ul class="requisitos">
+                ${vaga.requisitos.slice(0, 3).map(req => `<li>${req}</li>`).join('')}
+                ${vaga.requisitos.length > 3 ? '<li>+ mais requisitos...</li>' : ''}
+            </ul>
+        </div>
+    `).join('');
+}
+
+// Função para filtrar vagas
+function filtrarVagas() {
+    const busca = document.getElementById('busca').value.toLowerCase();
+    const area = document.getElementById('filtroArea').value;
+    
+    const vagasFiltradas = vagas.filter(vaga => {
+        const matchBusca = vaga.titulo.toLowerCase().includes(busca);
+        const matchArea = !area || vaga.area === area;
+        return matchBusca && matchArea;
+    });
+    
+    renderizarVagas(vagasFiltradas);
+}
+
+// Função para mostrar detalhes da vaga
+function mostrarDetalhes(id) {
+    const vaga = vagas.find(v => v.id === id);
+    if (!vaga) return;
+    
+    document.getElementById('titulo-vaga').textContent = vaga.titulo;
+    document.getElementById('descricao-vaga').textContent = vaga.descricao;
+    document.getElementById('requisitos-vaga').innerHTML = 
+        vaga.requisitos.map(req => `<li>${req}</li>`).join('');
+    
+    document.getElementById('detalhes-vaga').classList.remove('oculto');
+    document.getElementById('detalhes-vaga').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Função para abrir modal
+function abrirModal() {
+    document.getElementById('modal').classList.add('ativo');
+    document.body.style.overflow = 'hidden';
+}
+
+// Função para fechar modal
+function fecharModal() {
+    document.getElementById('modal').classList.remove('ativo');
+    document.body.style.overflow = 'auto';
+}
+
+// Função para enviar formulário
+function enviarFormulario(event) {
+    event.preventDefault();
+    alert('Candidatura enviada com sucesso! Entraremos em contato em breve.');
+    fecharModal();
+    event.target.reset();
+}
+
+// Fechar modal ao clicar fora
+document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        fecharModal();
+    }
+});
+
+// Inicializar página
+document.addEventListener('DOMContentLoaded', function() {
+    renderizarVagas();
+});
+</script>
+{% endblock %}
+

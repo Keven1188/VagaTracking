@@ -1,0 +1,264 @@
+{% extends "login/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/vagas.css' %}">
+{% endblock %}
+
+{% block title %}Vagas Disponíveis{% endblock %}
+
+{% block content %}
+<script>
+document.body.classList.add('page-layout');
+</script>
+
+<div class="vagas-header">
+    <h1>Vagas Disponíveis</h1>
+    {% if user.is_authenticated and user.profile.role == 'RH' %}
+        <button type="button" class="btn-adicionar-vaga" onclick="abrirModalAdicionarVaga()">
+            + Adicionar Nova Vaga
+        </button>
+    {% endif %}
+</div>
+
+<form method="get" class="filtros">
+    <input type="text" name="busca" placeholder="🔍 Buscar vaga por título..." value="{{ request.GET.busca }}">
+    <input type="text" name="localizacao" placeholder="📍 Localização..." value="{{ request.GET.localizacao }}">
+    <button type="submit">Filtrar</button>
+</form>
+
+<div id="vagas-lista" class="vagas-grid">
+    {% if vagas %}
+        {% for vaga in vagas %}
+            <div class="vaga-card">
+                <div class="vaga-header">
+                    <h3>{{ vaga.title }}</h3>
+                    {% if user.is_authenticated and user.profile.role == 'RH' %}
+                        <div class="vaga-actions">
+                            <button type="button" class="btn-editar" onclick="editarVaga({{ vaga.id }})" title="Editar">
+                                ✏️
+                            </button>
+                            <button type="button" class="btn-excluir" onclick="excluirVaga({{ vaga.id }})" title="Excluir">
+                                🗑️
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="vaga-info">
+                    <p class="localizacao">📍 {{ vaga.location }}</p>
+                    {% if vaga.salary %}
+                        <p class="salario">💰 {{ vaga.salary }}</p>
+                    {% endif %}
+                    <p class="data-publicacao">📅 {{ vaga.data_publication|date:"d/m/Y" }}</p>
+                </div>
+                <p class="descricao">{{ vaga.description|truncatewords:20 }}</p>
+                {% if vaga.requirements %}
+                    <div class="requisitos">
+                        <strong>Requisitos:</strong>
+                        <p>{{ vaga.requirements|truncatewords:15 }}</p>
+                    </div>
+                {% endif %}
+                <button type="button" class="btn-detalhes" onclick="mostrarDetalhes({{ vaga.id }})">Ver detalhes</button>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align: center; color: var(--text-muted); grid-column: 1 / -1;">Nenhuma vaga encontrada.</p>
+    {% endif %}
+</div>
+
+<!-- Modal para detalhes da vaga -->
+<div id="modal-detalhes" class="modal">
+    <div class="modal-conteudo">
+        <span class="fechar" onclick="fecharModal('modal-detalhes')">&times;</span>
+        <div id="detalhes-vaga-content">
+            <!-- Conteúdo será preenchido via JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal para adicionar/editar vaga (apenas para RH) -->
+{% if user.is_authenticated and user.profile.role == 'RH' %}
+<div id="modal-vaga" class="modal">
+    <div class="modal-conteudo">
+        <span class="fechar" onclick="fecharModal('modal-vaga')">&times;</span>
+        <h3 id="modal-vaga-titulo">Adicionar Nova Vaga</h3>
+        <form id="form-vaga" onsubmit="salvarVaga(event)">
+            {% csrf_token %}
+            <input type="hidden" id="vaga-id" name="vaga_id">
+            <div class="form-group">
+                <label for="title">Título da Vaga *</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Localização *</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+            <div class="form-group">
+                <label for="salary">Salário</label>
+                <input type="text" id="salary" name="salary" placeholder="Ex: R$ 5.000 - R$ 8.000">
+            </div>
+            <div class="form-group">
+                <label for="description">Descrição *</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="requirements">Requisitos</label>
+                <textarea id="requirements" name="requirements" rows="3"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="button" onclick="fecharModal('modal-vaga')">Cancelar</button>
+                <button type="submit" id="btn-salvar">Salvar Vaga</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+<script>
+// Dados das vagas para JavaScript
+const vagas = {{ vagas_json|safe }};
+
+// Função para mostrar detalhes da vaga
+function mostrarDetalhes(vagaId) {
+    const vaga = vagas.find(v => v.id === vagaId);
+    if (!vaga) return;
+    
+    const content = `
+        <h2>${vaga.title}</h2>
+        <div class="vaga-info-detalhes">
+            <p><strong>📍 Localização:</strong> ${vaga.location}</p>
+            ${vaga.salary ? `<p><strong>💰 Salário:</strong> ${vaga.salary}</p>` : ''}
+            <p><strong>📅 Publicado em:</strong> ${vaga.data_publication}</p>
+        </div>
+        <div class="descricao-completa">
+            <h3>Descrição</h3>
+            <p>${vaga.description}</p>
+        </div>
+        ${vaga.requirements ? `
+            <div class="requisitos-completos">
+                <h3>Requisitos</h3>
+                <p>${vaga.requirements}</p>
+            </div>
+        ` : ''}
+        <div class="acoes-candidatura">
+            <button type="button" class="btn-candidatar" onclick="alert('Funcionalidade de candidatura será implementada em breve!')">
+                Candidatar-se
+            </button>
+        </div>
+    `;
+    
+    document.getElementById('detalhes-vaga-content').innerHTML = content;
+    abrirModal('modal-detalhes');
+}
+
+// Funções para RH
+{% if user.is_authenticated and user.profile.role == 'RH' %}
+function abrirModalAdicionarVaga() {
+    document.getElementById('modal-vaga-titulo').textContent = 'Adicionar Nova Vaga';
+    document.getElementById('btn-salvar').textContent = 'Adicionar Vaga';
+    document.getElementById('form-vaga').reset();
+    document.getElementById('vaga-id').value = '';
+    abrirModal('modal-vaga');
+}
+
+function editarVaga(vagaId) {
+    fetch(`/accounts/vagas/obter/${vagaId}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const vaga = data.vaga;
+                document.getElementById('modal-vaga-titulo').textContent = 'Editar Vaga';
+                document.getElementById('btn-salvar').textContent = 'Salvar Alterações';
+                document.getElementById('vaga-id').value = vaga.id;
+                document.getElementById('title').value = vaga.title;
+                document.getElementById('location').value = vaga.location;
+                document.getElementById('salary').value = vaga.salary;
+                document.getElementById('description').value = vaga.description;
+                document.getElementById('requirements').value = vaga.requirements;
+                abrirModal('modal-vaga');
+            } else {
+                alert('Erro ao carregar dados da vaga: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao carregar dados da vaga');
+        });
+}
+
+function excluirVaga(vagaId) {
+    if (confirm('Tem certeza que deseja excluir esta vaga?')) {
+        fetch(`/accounts/vagas/excluir/${vagaId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload();
+            } else {
+                alert('Erro ao excluir vaga: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao excluir vaga');
+        });
+    }
+}
+
+function salvarVaga(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const vagaId = document.getElementById('vaga-id').value;
+    const url = vagaId ? `/accounts/vagas/editar/${vagaId}/` : '/accounts/vagas/adicionar/';
+    
+    fetch(url, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            fecharModal('modal-vaga');
+            location.reload();
+        } else {
+            alert('Erro ao salvar vaga: ' + (data.errors ? JSON.stringify(data.errors) : data.error));
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao salvar vaga');
+    });
+}
+{% endif %}
+
+// Funções auxiliares para modais
+function abrirModal(modalId) {
+    document.getElementById(modalId).classList.add('ativo');
+    document.body.style.overflow = 'hidden';
+}
+
+function fecharModal(modalId) {
+    document.getElementById(modalId).classList.remove('ativo');
+    document.body.style.overflow = 'auto';
+}
+
+// Fechar modal ao clicar fora
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal') && e.target.classList.contains('ativo')) {
+        fecharModal(e.target.id);
+    }
+});
+</script>
+{% endblock %}
+

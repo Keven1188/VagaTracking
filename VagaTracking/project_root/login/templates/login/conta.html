@@ -1,0 +1,206 @@
+{% extends "login/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/conta.css' %}">
+{% endblock %}
+
+{% block title %}Minha Conta{% endblock %}
+
+{% block content %}
+<script>
+document.body.classList.add('page-layout');
+</script>
+
+<h1>Minha Conta</h1>
+
+<div class="conta-grid">
+    <!-- Card de Informações Pessoais -->
+    <div class="conta-card">
+        <h3 class="card-title">👤 Informações Pessoais</h3>
+        <div class="info-grid">
+            <div class="info-item">
+                <strong>Nome de Usuário:</strong>
+                <span>{{ user.username }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Email:</strong>
+                <span>{{ user.email }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Tipo de Conta:</strong>
+                <span class="role-badge role-{{ user.profile.role|lower }}">
+                    {% if user.profile.role == 'RH' %}
+                        🏢 Recursos Humanos
+                    {% else %}
+                        👨‍💼 Candidato
+                    {% endif %}
+                </span>
+            </div>
+            <div class="info-item">
+                <strong>Membro desde:</strong>
+                <span>{{ user.date_joined|date:"d/m/Y" }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Último acesso:</strong>
+                <span>{{ user.last_login|date:"d/m/Y H:i"|default:"Nunca" }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card de Estatísticas -->
+    <div class="conta-card">
+        <h3 class="card-title">📊 Estatísticas</h3>
+        <div class="stats-grid">
+            {% if user.profile.role == 'RH' %}
+                <div class="stat-item">
+                    <div class="stat-number">{{ vagas_criadas }}</div>
+                    <div class="stat-label">Vagas Criadas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ candidatos_recebidos|default:"0" }}</div>
+                    <div class="stat-label">Candidatos Recebidos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ vagas_ativas }}</div>
+                    <div class="stat-label">Vagas Ativas</div>
+                </div>
+            {% else %}
+                <div class="stat-item">
+                    <div class="stat-number">{{ candidaturas_enviadas|default:"0" }}</div>
+                    <div class="stat-label">Candidaturas Enviadas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ candidaturas_analise|default:"0" }}</div>
+                    <div class="stat-label">Em Análise</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ entrevistas_marcadas|default:"0" }}</div>
+                    <div class="stat-label">Entrevistas</div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Ações Rápidas -->
+<div class="conta-card acoes-card">
+    <h3 class="card-title">⚡ Ações Rápidas</h3>
+    <div class="acoes-grid">
+        <a href="{% url 'login:profile_edit' %}" class="acao-btn btn-primary">
+            <span class="btn-icon">✏️</span>
+            <span>Editar Perfil</span>
+        </a>
+        
+        {% if user.profile.role == 'RH' %}
+            <a href="{% url 'login:candidatos' %}" class="acao-btn btn-secondary">
+                <span class="btn-icon">👥</span>
+                <span>Ver Candidatos</span>
+            </a>
+            <a href="{% url 'login:vagas' %}" class="acao-btn btn-success">
+                <span class="btn-icon">➕</span>
+                <span>Gerenciar Vagas</span>
+            </a>
+        {% else %}
+            <a href="{% url 'login:vagas' %}" class="acao-btn btn-secondary">
+                <span class="btn-icon">💼</span>
+                <span>Ver Vagas</span>
+            </a>
+            <button onclick="verMinhasCandidaturas()" class="acao-btn btn-success">
+                <span class="btn-icon">📋</span>
+                <span>Minhas Candidaturas</span>
+            </button>
+        {% endif %}
+        
+        <a href="{% url 'login:logout' %}" class="acao-btn btn-danger">
+            <span class="btn-icon">🚪</span>
+            <span>Sair da Conta</span>
+        </a>
+    </div>
+</div>
+
+<!-- Atividade Recente -->
+<div class="conta-card atividade-card">
+    <h3 class="card-title">🕒 Atividade Recente</h3>
+    <div id="atividade-recente" class="atividade-lista">
+        <!-- Atividades serão carregadas via JavaScript -->
+    </div>
+</div>
+
+<script>
+// Dados de exemplo de atividade recente
+const atividadeRecente = [
+    {% if user.profile.role == 'RH' %}
+        {
+            tipo: "vaga_criada",
+            descricao: "Nova vaga criada: Desenvolvedor Frontend React",
+            data: "{{ user.date_joined|date:'Y-m-d' }}",
+            icone: "📝"
+        },
+        {
+            tipo: "perfil_atualizado",
+            descricao: "Perfil atualizado com sucesso",
+            data: "{{ user.date_joined|date:'Y-m-d' }}",
+            icone: "✏️"
+        }
+    {% else %}
+        {
+            tipo: "conta_criada",
+            descricao: "Conta criada com sucesso",
+            data: "{{ user.date_joined|date:'Y-m-d' }}",
+            icone: "🎉"
+        },
+        {
+            tipo: "perfil_atualizado",
+            descricao: "Perfil atualizado com sucesso",
+            data: "{{ user.date_joined|date:'Y-m-d' }}",
+            icone: "✏️"
+        }
+    {% endif %}
+];
+
+// Função para renderizar atividade recente
+function renderizarAtividade() {
+    const container = document.getElementById('atividade-recente');
+    
+    if (atividadeRecente.length === 0) {
+        container.innerHTML = '<p class="no-activity">Nenhuma atividade recente.</p>';
+        return;
+    }
+    
+    container.innerHTML = atividadeRecente.map(atividade => `
+        <div class="atividade-item">
+            <div class="atividade-icon">${atividade.icone}</div>
+            <div class="atividade-content">
+                <div class="atividade-descricao">${atividade.descricao}</div>
+                <div class="atividade-data">${formatarData(atividade.data)}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Função para formatar data
+function formatarData(dataString) {
+    const data = new Date(dataString);
+    const hoje = new Date();
+    const diffTime = Math.abs(hoje - data);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) return 'Hoje';
+    if (diffDays === 2) return 'Ontem';
+    if (diffDays <= 7) return `${diffDays - 1} dias atrás`;
+    return data.toLocaleDateString('pt-BR');
+}
+
+// Função para ver candidaturas (Candidato)
+function verMinhasCandidaturas() {
+    alert('Funcionalidade de candidaturas será implementada em breve!');
+}
+
+// Inicializar página
+document.addEventListener('DOMContentLoaded', function() {
+    renderizarAtividade();
+});
+</script>
+{% endblock %}
+

@@ -7,27 +7,85 @@
 
   <link rel="stylesheet" href="{% static 'css/theme.css' %}">
   <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
+  <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
   {% block extra_css %}{% endblock %}
 </head>
 <body>
-  <nav>
-    {% if user.is_authenticated %}
-      Olá, {{ user.username }} |
-      <a href="{% url 'login:conta' %}">Minha Conta</a> |
-        <a href="{% url 'login:candidatos' %}">Candidatos</a> |
-      <a href="{% url 'login:vagas' %}">Vagas</a> |
-      <a href="{% url 'login:logout' %}">Sair</a>
-    {% endif %}
-  </nav>
-  <div class="container">
-    {% for msg in messages %}
-      <div class="message {{ msg.tags }}">{{ msg }}</div>
-    {% endfor %}
-    {% block content %}{% endblock %}
+  {% if user.is_authenticated %}
+    <!-- Botão do menu hambúrguer -->
+    <button class="hamburger-menu" id="hamburger-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <!-- Overlay para fechar sidebar -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3>VagaTracking</h3>
+        <div class="user-info">
+          <div class="user-avatar">{{ user.username|first|upper }}</div>
+          <div class="user-details">
+            <span class="user-name">{{ user.username }}</span>
+            <span class="user-role">
+              {% if user.profile.role == 'RH' %}
+                🏢 Recursos Humanos
+              {% else %}
+                👨‍💼 Candidato
+              {% endif %}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-menu">
+        <a href="{% url 'login:conta' %}" class="menu-item">
+          <span class="menu-icon">👤</span>
+          <span class="menu-text">Minha Conta</span>
+        </a>
+        
+        <a href="{% url 'login:vagas' %}" class="menu-item">
+          <span class="menu-icon">💼</span>
+          <span class="menu-text">Vagas</span>
+        </a>
+        
+        {% if user.profile.role == 'RH' %}
+          <a href="{% url 'login:candidatos' %}" class="menu-item">
+            <span class="menu-icon">👥</span>
+            <span class="menu-text">Candidatos</span>
+          </a>
+        {% endif %}
+        
+        <a href="{% url 'login:profile_edit' %}" class="menu-item">
+          <span class="menu-icon">✏️</span>
+          <span class="menu-text">Editar Perfil</span>
+        </a>
+        
+        <div class="menu-divider"></div>
+        
+        <a href="{% url 'login:logout' %}" class="menu-item logout">
+          <span class="menu-icon">🚪</span>
+          <span class="menu-text">Sair</span>
+        </a>
+      </div>
+    </nav>
+  {% endif %}
+
+  <div class="main-content" id="main-content">
+    <div class="container">
+      {% for msg in messages %}
+        <div class="message {{ msg.tags }}">{{ msg }}</div>
+      {% endfor %}
+      {% block content %}{% endblock %}
+    </div>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // Configuração do tema
         const currentTheme = localStorage.getItem('theme');
 
         if (currentTheme) {
@@ -37,6 +95,62 @@
             document.body.classList.add('light-mode');
             localStorage.setItem('theme', 'light-mode');
         }
+
+        // Configuração do sidebar (apenas se usuário estiver autenticado)
+        {% if user.is_authenticated %}
+        const hamburgerToggle = document.getElementById('hamburger-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const mainContent = document.getElementById('main-content');
+
+        // Função para abrir sidebar
+        function openSidebar() {
+            sidebar.classList.add('active');
+            sidebarOverlay.classList.add('active');
+            hamburgerToggle.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Função para fechar sidebar
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+            hamburgerToggle.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Event listeners
+        hamburgerToggle.addEventListener('click', () => {
+            if (sidebar.classList.contains('active')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        });
+
+        sidebarOverlay.addEventListener('click', closeSidebar);
+
+        // Fechar sidebar ao clicar em um link do menu
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', closeSidebar);
+        });
+
+        // Fechar sidebar com tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+                closeSidebar();
+            }
+        });
+
+        // Marcar item ativo do menu baseado na URL atual
+        const currentPath = window.location.pathname;
+        menuItems.forEach(item => {
+            if (item.getAttribute('href') === currentPath) {
+                item.classList.add('active');
+            }
+        });
+        {% endif %}
     });
   </script>
 </body>

@@ -1,0 +1,474 @@
+/* ===== CSS PARA SIDEBAR COM MENU HAMBÚRGUER ===== */
+
+/* ===== BOTÃO HAMBÚRGUER ===== */
+.hamburger-menu {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 1001;
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(10px);
+}
+
+.hamburger-menu:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Linhas do hambúrguer */
+.hamburger-menu span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 1px;
+    transition: all var(--transition-normal);
+    transform-origin: center;
+}
+
+/* Animação do hambúrguer quando ativo */
+.hamburger-menu.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.hamburger-menu.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ===== OVERLAY ===== */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -320px;
+    width: 320px;
+    height: 100vh;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border-color);
+    z-index: 1000;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-xl);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+/* ===== HEADER DO SIDEBAR ===== */
+.sidebar-header {
+    padding: 2rem 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+.sidebar-header h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: all var(--transition-normal);
+}
+
+/* ===== INFORMAÇÕES DO USUÁRIO ===== */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-normal);
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-white);
+    font-weight: 700;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.user-name {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color var(--transition-normal);
+}
+
+.user-role {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color var(--transition-normal);
+}
+
+/* ===== MENU DO SIDEBAR ===== */
+.sidebar-menu {
+    flex: 1;
+    padding: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all var(--transition-normal);
+    position: relative;
+    border-left: 3px solid transparent;
+}
+
+.menu-item:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-left-color: var(--primary-color);
+    transform: translateX(5px);
+}
+
+.menu-item.active {
+    background: var(--bg-tertiary);
+    color: var(--primary-color);
+    border-left-color: var(--primary-color);
+    font-weight: 600;
+}
+
+.menu-item.active .menu-icon {
+    transform: scale(1.1);
+}
+
+/* Estilo especial para o item de logout */
+.menu-item.logout {
+    margin-top: auto;
+    border-top: 1px solid var(--border-color);
+    color: var(--error-color);
+}
+
+.menu-item.logout:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--error-color);
+    border-left-color: var(--error-color);
+}
+
+/* ===== ÍCONES E TEXTO DO MENU ===== */
+.menu-icon {
+    font-size: 1.25rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform var(--transition-normal);
+}
+
+.menu-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: all var(--transition-normal);
+}
+
+/* ===== DIVISOR DO MENU ===== */
+.menu-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 1rem 1.5rem;
+    transition: background-color var(--transition-normal);
+}
+
+/* ===== AJUSTES NO CONTEÚDO PRINCIPAL ===== */
+.main-content {
+    transition: all var(--transition-normal);
+    min-height: 100vh;
+    padding-top: 80px; /* Espaço para o botão hambúrguer */
+}
+
+/* Ajustes para páginas com layout específico */
+body.page-layout .main-content {
+    padding-top: 80px;
+}
+
+body.page-layout .main-content .container {
+    margin-top: 0;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        top: 1rem;
+        left: 1rem;
+        width: 45px;
+        height: 45px;
+    }
+    
+    .hamburger-menu span {
+        width: 18px;
+    }
+    
+    .sidebar {
+        width: 280px;
+        left: -280px;
+    }
+    
+    .sidebar-header {
+        padding: 1.5rem 1rem 1rem;
+    }
+    
+    .sidebar-header h3 {
+        font-size: 1.25rem;
+    }
+    
+    .user-info {
+        padding: 0.75rem;
+    }
+    
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .user-name {
+        font-size: 0.875rem;
+    }
+    
+    .user-role {
+        font-size: 0.7rem;
+    }
+    
+    .menu-item {
+        padding: 0.875rem 1rem;
+    }
+    
+    .menu-icon {
+        font-size: 1.125rem;
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+    
+    .menu-text {
+        font-size: 0.8rem;
+    }
+    
+    .main-content {
+        padding-top: 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hamburger-menu {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .hamburger-menu span {
+        width: 16px;
+        height: 1.5px;
+    }
+    
+    .sidebar {
+        width: 260px;
+        left: -260px;
+    }
+    
+    .sidebar-header h3 {
+        font-size: 1.125rem;
+        margin-bottom: 1rem;
+    }
+    
+    .user-info {
+        padding: 0.5rem;
+        gap: 0.75rem;
+    }
+    
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+        font-size: 0.875rem;
+    }
+    
+    .menu-item {
+        padding: 0.75rem 0.875rem;
+        gap: 0.75rem;
+    }
+    
+    .main-content {
+        padding-top: 60px;
+    }
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.sidebar.active {
+    animation: slideInLeft 0.3s ease-out;
+}
+
+/* Animação para os itens do menu */
+.menu-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+    transition: left var(--transition-normal);
+}
+
+.dark-mode .menu-item::before {
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+}
+
+.menu-item:hover::before {
+    left: 100%;
+}
+
+/* ===== MELHORIAS DE ACESSIBILIDADE ===== */
+@media (prefers-reduced-motion: reduce) {
+    .sidebar,
+    .sidebar-overlay,
+    .hamburger-menu,
+    .hamburger-menu span,
+    .menu-item,
+    .main-content {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* Focus visible para navegação por teclado */
+.hamburger-menu:focus-visible,
+.menu-item:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* ===== ESTADOS ESPECIAIS ===== */
+
+/* Quando o sidebar está ativo, esconder o scroll do body */
+body:has(.sidebar.active) {
+    overflow: hidden;
+}
+
+/* Efeito de blur no conteúdo principal quando sidebar está ativo */
+.sidebar.active ~ .main-content {
+    filter: blur(2px);
+    pointer-events: none;
+}
+
+/* ===== TEMA ESCURO - AJUSTES ESPECÍFICOS ===== */
+.dark-mode .sidebar {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+}
+
+.dark-mode .hamburger-menu {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.dark-mode .user-info {
+    background: var(--bg-primary);
+}
+
+/* ===== SCROLLBAR PERSONALIZADA PARA SIDEBAR ===== */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+

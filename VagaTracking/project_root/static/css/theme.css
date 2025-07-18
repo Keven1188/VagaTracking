@@ -4,7 +4,7 @@
     --container-background: #ffffff;
     --text-color: #333333;
     --card-background: #ffffff;
-    --card-border: #e0e0e0;
+    --card-border: transparent; /* Removendo borda */
     --button-background: #007BFF;
     --button-hover-background: #0056b3;
     --header-color: #333333;
@@ -28,6 +28,7 @@
     --form-cancel-button-hover-background: #5a6268;
     --form-submit-button-background: #007BFF;
     --form-submit-button-hover-background: #0056b3;
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adicionando box-shadow */
 }
 
 /* Variáveis CSS para o tema escuro */
@@ -36,7 +37,7 @@
     --container-background: #16213e;
     --text-color: #e0e0e0;
     --card-background: #16213e;
-    --card-border: #0f3460;
+    --card-border: #0f3460; /* Mantendo borda no tema escuro */
     --button-background: #0f3460;
     --button-hover-background: #0a2342;
     --header-color: #e0e0e0;
@@ -60,11 +61,12 @@
     --form-cancel-button-hover-background: #5a6268;
     --form-submit-button-background: #0f3460;
     --form-submit-button-hover-background: #0a2342;
+    --box-shadow: none; /* Removendo box-shadow no tema escuro */
 }
 
 /* Estilos gerais */
 body {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: \'Segoe UI\', sans-serif;
     background-color: var(--background-color);
     margin: 0;
     padding: 20px;
@@ -78,8 +80,8 @@ body {
     background: var(--container-background);
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s ease;
+    box-shadow: var(--box-shadow); /* Usando a variável box-shadow */
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 h1 {
@@ -88,7 +90,7 @@ h1 {
     transition: color 0.3s ease;
 }
 
-input[type="text"],
+input[type=\"text\"],
 select,
 textarea {
     width: 100%;
@@ -109,20 +111,20 @@ textarea {
 
 .vaga-card {
     background: var(--card-background);
-    border: 1px solid var(--card-border);
+    border: 1px solid var(--card-border); /* Usando a variável card-border */
     border-radius: 10px;
     padding: 16px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--box-shadow); /* Usando a variável box-shadow */
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease, border-color 0.3s ease;
 }
 
 .vaga-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Mantendo box-shadow no hover */
 }
 
 .vaga-titulo {
@@ -229,21 +231,21 @@ textarea {
     color: var(--text-color);
 }
 
-.form-actions button[type="button"] {
+.form-actions button[type=\"button\"] {
     background-color: var(--form-cancel-button-background);
     color: white;
 }
 
-.form-actions button[type="button"]:hover {
+.form-actions button[type=\"button\"]:hover {
     background-color: var(--form-cancel-button-hover-background);
 }
 
-.form-actions button[type="submit"] {
+.form-actions button[type=\"submit\"] {
     background-color: var(--form-submit-button-background);
     color: white;
 }
 
-.form-actions button[type="submit"]:hover {
+.form-actions button[type=\"submit\"]:hover {
     background-color: var(--form-submit-button-hover-background);
 }
 
@@ -499,5 +501,6 @@ button:hover {
         align-self: flex-end;
     }
 }
+
 
 

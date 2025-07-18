@@ -8,7 +8,7 @@
 }
 
 .conta-card {
-    background: rgb(30, 30, 46);
+    background: white;
     border: 1px solid #e0e0e0;
     border-radius: 10px;
     padding: 20px;
@@ -22,7 +22,7 @@
 }
 
 .card-title {
-    color: white;
+    color: black;
     margin-bottom: 20px;
     font-size: 18px;
     font-weight: 600;
@@ -50,7 +50,7 @@
 }
 
 .info-item span {
-    color: white;
+    color: black;
     font-size: 16px;
     font-weight: 400;
 }
@@ -73,8 +73,9 @@
 .stat-item {
     text-align: center;
     padding: 15px;
-    background-color: rgb(30, 30, 46);
+    background-color: white;
     border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     border: 1px solid #e9ecef;
 }
 
@@ -181,7 +182,7 @@
     align-items: center;
     gap: 15px;
     padding: 15px;
-    background-color: rgb(30, 30, 46);
+    background-color: white;
     border-radius: 8px;
     border: 1px solid #e9ecef;
     transition: background-color 0.2s ease;
@@ -208,7 +209,7 @@
 }
 
 .atividade-descricao {
-    color: white;
+    color: black;
     margin-bottom: 5px;
 }
 

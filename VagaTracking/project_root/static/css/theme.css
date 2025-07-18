@@ -1,0 +1,503 @@
+/* Variáveis CSS para o tema claro */
+:root {
+    --background-color: #f4f4f4;
+    --container-background: #ffffff;
+    --text-color: #333333;
+    --card-background: #ffffff;
+    --card-border: #e0e0e0;
+    --button-background: #007BFF;
+    --button-hover-background: #0056b3;
+    --header-color: #333333;
+    --input-border: #ccc;
+    --modal-background: rgba(255, 255, 255, 0.95);
+    --modal-content-background: #ffffff;
+    --requisitos-background: #f0f0f0;
+    --requisitos-border-left: #007BFF;
+    --vaga-info-detalhes-background: #f8f8f8;
+    --filter-button-background: #007BFF;
+    --filter-button-hover-background: #0056b3;
+    --adicionar-vaga-button-background: #28a745;
+    --adicionar-vaga-button-hover-background: #218838;
+    --edit-button-hover-background: #f0f0f0;
+    --delete-button-hover-background: #ffe6e6;
+    --candidatar-button-background: #28a745;
+    --candidatar-button-hover-background: #218838;
+    --form-label-color: #333;
+    --form-input-border: #ddd;
+    --form-cancel-button-background: #6c757d;
+    --form-cancel-button-hover-background: #5a6268;
+    --form-submit-button-background: #007BFF;
+    --form-submit-button-hover-background: #0056b3;
+}
+
+/* Variáveis CSS para o tema escuro */
+.dark-mode {
+    --background-color: #1a1a2e;
+    --container-background: #16213e;
+    --text-color: #e0e0e0;
+    --card-background: #16213e;
+    --card-border: #0f3460;
+    --button-background: #0f3460;
+    --button-hover-background: #0a2342;
+    --header-color: #e0e0e0;
+    --input-border: #0f3460;
+    --modal-background: rgba(22, 33, 62, 0.95);
+    --modal-content-background: #16213e;
+    --requisitos-background: #0f3460;
+    --requisitos-border-left: #007BFF;
+    --vaga-info-detalhes-background: #0f3460;
+    --filter-button-background: #0f3460;
+    --filter-button-hover-background: #0a2342;
+    --adicionar-vaga-button-background: #28a745;
+    --adicionar-vaga-button-hover-background: #218838;
+    --edit-button-hover-background: #0f3460;
+    --delete-button-hover-background: #0f3460;
+    --candidatar-button-background: #28a745;
+    --candidatar-button-hover-background: #218838;
+    --form-label-color: #e0e0e0;
+    --form-input-border: #0f3460;
+    --form-cancel-button-background: #6c757d;
+    --form-cancel-button-hover-background: #5a6268;
+    --form-submit-button-background: #0f3460;
+    --form-submit-button-hover-background: #0a2342;
+}
+
+/* Estilos gerais */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 20px;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    background: var(--container-background);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+}
+
+h1 {
+    color: var(--header-color);
+    margin-bottom: 20px;
+    transition: color 0.3s ease;
+}
+
+input[type="text"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 16px 0;
+    border-radius: 5px;
+    border: 1px solid var(--input-border);
+    background-color: var(--container-background);
+    color: var(--text-color);
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.vagas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.vaga-card {
+    background: var(--card-background);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.vaga-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.vaga-titulo {
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.vaga-descricao,
+.descricao {
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.requisitos {
+    background-color: var(--requisitos-background);
+    border-left: 3px solid var(--requisitos-border-left);
+    transition: background-color 0.3s ease;
+}
+
+.requisitos strong,
+.requisitos p {
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.btn-detalhes {
+    background-color: var(--button-background);
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.btn-detalhes:hover {
+    background-color: var(--button-hover-background);
+}
+
+.modal {
+    background-color: var(--modal-background);
+    transition: background-color 0.3s ease;
+}
+
+.modal-conteudo {
+    background-color: var(--modal-content-background);
+    transition: background-color 0.3s ease;
+}
+
+.vagas-header h1 {
+    color: var(--header-color);
+}
+
+.btn-adicionar-vaga {
+    background-color: var(--adicionar-vaga-button-background);
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.btn-adicionar-vaga:hover {
+    background-color: var(--adicionar-vaga-button-hover-background);
+}
+
+.btn-editar:hover {
+    background-color: var(--edit-button-hover-background);
+}
+
+.btn-excluir:hover {
+    background-color: var(--delete-button-hover-background);
+}
+
+.vaga-info p {
+    color: var(--text-color);
+}
+
+.vaga-info-detalhes {
+    background-color: var(--vaga-info-detalhes-background);
+    transition: background-color 0.3s ease;
+}
+
+.vaga-info-detalhes p {
+    color: var(--text-color);
+}
+
+.descricao-completa h3,
+.requisitos-completos h3 {
+    color: var(--text-color);
+}
+
+.btn-candidatar {
+    background-color: var(--candidatar-button-background);
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.btn-candidatar:hover {
+    background-color: var(--candidatar-button-hover-background);
+}
+
+.form-group label {
+    color: var(--form-label-color);
+}
+
+.form-group input,
+.form-group textarea {
+    border: 1px solid var(--form-input-border);
+    background-color: var(--container-background);
+    color: var(--text-color);
+}
+
+.form-actions button[type="button"] {
+    background-color: var(--form-cancel-button-background);
+    color: white;
+}
+
+.form-actions button[type="button"]:hover {
+    background-color: var(--form-cancel-button-hover-background);
+}
+
+.form-actions button[type="submit"] {
+    background-color: var(--form-submit-button-background);
+    color: white;
+}
+
+.form-actions button[type="submit"]:hover {
+    background-color: var(--form-submit-button-hover-background);
+}
+
+.filtros button {
+    background-color: var(--filter-button-background);
+    color: white;
+}
+
+.filtros button:hover {
+    background-color: var(--filter-button-hover-background);
+}
+
+/* Estilos para o botão de alternar tema */
+.theme-toggle-button {
+    background-color: var(--button-background);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.theme-toggle-button:hover {
+    background-color: var(--button-hover-background);
+}
+
+
+/* Estilos existentes do vagas.css adaptados para variáveis */
+
+/* Removido: body, .container, h1, input[type="text"], select, .vaga-card, .vaga-card:hover, .vaga-titulo, .vaga-descricao, .descricao, .requisitos, .requisitos strong, .requisitos p, .btn-detalhes, .btn-detalhes:hover, .modal, .modal-conteudo, .vagas-header h1, .btn-adicionar-vaga, .btn-adicionar-vaga:hover, .btn-editar:hover, .btn-excluir:hover, .vaga-info p, .vaga-info-detalhes, .vaga-info-detalhes p, .descricao-completa h3, .requisitos-completos h3, .btn-candidatar, .btn-candidatar:hover, .form-group label, .form-group input, .form-group textarea, .form-actions button[type="button"], .form-actions button[type="button"]:hover, .form-actions button[type="submit"], .form-actions button[type="submit"]:hover, .filtros button, .filtros button:hover */
+
+/* Estilos que não precisam de variáveis de tema */
+.vaga-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.area {
+    font-size: 13px;
+    color: #0a66c2;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.tags-requisitos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tag {
+    background-color: #e8f0fe;
+    color: #0a66c2;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.ver-mais {
+    align-self: flex-end;
+    padding: 6px 12px;
+    font-size: 13px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.ver-mais:hover {
+    background-color: #0056b3;
+}
+
+#detalhes-vaga {
+    margin-top: 30px;
+    padding: 20px;
+    border-top: 2px solid #007BFF;
+}
+
+button {
+    background-color: var(--button-background);
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--button-hover-background);
+}
+
+.oculto {
+    display: none !important;
+}
+
+.fechar {
+    position: absolute;
+    top: 8px;
+    right: 14px;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.form-linkedin {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-linkedin input,
+.form-linkedin textarea {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid var(--input-border);
+    background-color: var(--container-background);
+    color: var(--text-color);
+}
+
+.form-linkedin button {
+    align-self: flex-end;
+    background-color: #0a66c2;
+}
+
+.form-linkedin button:hover {
+    background-color: #004182;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+}
+
+.vagas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.vaga-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.vaga-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-editar, .btn-excluir {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.vaga-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.vaga-info p {
+    margin: 0;
+    font-size: 13px;
+}
+
+.localizacao, .salario, .data-publicacao {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.acoes-candidatura {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group input,
+.form-group textarea {
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.filtros {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: flex-end;
+}
+
+.filtros input {
+    flex: 1;
+    margin: 0;
+}
+
+.filtros button {
+    padding: 10px 20px;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .vagas-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+    
+    .filtros {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .vaga-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .vaga-actions {
+        align-self: flex-end;
+    }
+}
+
+

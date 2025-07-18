@@ -1,36 +1,41 @@
+/* Estilos gerais */
 body {
     font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f4f4;
+    background-color: var(--background-color);
     margin: 0;
     padding: 20px;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
-
 
 .container {
     max-width: 1100px;
     margin: auto;
-    background: rgb(30, 30, 46);
+    background: var(--container-background);
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
 }
-
 
 h1 {
-    color: #ffffff;
+    color: var(--header-color);
     margin-bottom: 20px;
+    transition: color 0.3s ease;
 }
 
-
 input[type="text"],
-select {
+select,
+textarea {
     width: 100%;
     padding: 10px;
     margin: 8px 0 16px 0;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
+    background-color: var(--container-background);
+    color: var(--text-color);
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
-
 
 .vagas-grid {
     display: grid;
@@ -38,10 +43,9 @@ select {
     gap: 20px;
 }
 
-
 .vaga-card {
-    background: rgb(30, 30, 46);
-    border: 1px solid #e0e0e0;
+    background: var(--card-background);
+    border: 1px solid var(--card-border);
     border-radius: 10px;
     padding: 16px;
     display: flex;
@@ -49,15 +53,13 @@ select {
     align-items: flex-start;
     gap: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease, border-color 0.3s ease;
 }
-
 
 .vaga-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
 
 .vaga-logo {
     width: 48px;
@@ -66,22 +68,21 @@ select {
     border-radius: 8px;
 }
 
-
 .vaga-titulo {
     font-size: 18px;
     font-weight: bold;
-    color: #333;
+    color: var(--text-color);
     margin: 0;
+    transition: color 0.3s ease;
 }
-
 
 .vaga-descricao {
     font-size: 14px;
-    color: black;
+    color: var(--text-color);
     margin: 0;
     flex: 1;
+    transition: color 0.3s ease;
 }
-
 
 .area {
     font-size: 13px;
@@ -90,21 +91,19 @@ select {
     margin-bottom: 6px;
 }
 
-
 .descricao {
     font-size: 14px;
-    color: black;
+    color: var(--text-color);
     margin: 0 0 8px 0;
     flex: 1;
+    transition: color 0.3s ease;
 }
-
 
 .tags-requisitos {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
 }
-
 
 .tag {
     background-color: #e8f0fe;
@@ -114,66 +113,61 @@ select {
     border-radius: 6px;
 }
 
-
 .ver-mais {
     align-self: flex-end;
     padding: 6px 12px;
     font-size: 13px;
-    background-color: #007BFF;
+    background-color: var(--button-background);
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
-
 
 .ver-mais:hover {
-    background-color: #0056b3;
+    background-color: var(--button-hover-background);
 }
-
 
 #detalhes-vaga {
     margin-top: 30px;
     padding: 20px;
-    border-top: 2px solid #007BFF;
+    border-top: 2px solid var(--button-background);
 }
 
-
 button {
-    background-color: #007BFF;
+    background-color: var(--button-background);
     color: white;
     padding: 10px 16px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
-
 
 button:hover {
-    background-color: #0056b3;
+    background-color: var(--button-hover-background);
 }
-
 
 .oculto {
     display: none !important;
 }
 
-
 .modal {
-    position: absolute; /* <- alterado de 'fixed' para 'absolute' */
+    position: fixed; /* Alterado de 'absolute' para 'fixed' para seguir a tela */
     top: 0;
     left: 0;
     width: 100%;
-    min-height: 100vh;
-    background-color: rgba(30, 30, 46, 0.95); /* semitransparente */
+    height: 100%; /* Alterado de min-height para height */
+    background-color: var(--modal-background);
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* alinha no topo */
-    padding: 60px 20px;
+    align-items: center; /* Alterado de flex-start para center para centralizar verticalmente */
     z-index: 9999;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s;
+    overflow-y: auto; /* Adicionado para permitir rolagem dentro do modal se o conteúdo for grande */
 }
 
 .modal.ativo {
@@ -182,13 +176,14 @@ button:hover {
 }
 
 .modal-conteudo {
-    background-color: rgb(30, 30, 46);
+    background-color: var(--modal-content-background);
     padding: 30px;
     border-radius: 10px;
     width: 90%;
     max-width: 550px;
     position: relative;
     z-index: 10000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adicionado sombra para destaque */
 }
 
 .fechar {
@@ -197,8 +192,9 @@ button:hover {
     right: 14px;
     font-size: 28px;
     cursor: pointer;
+    color: var(--text-color);
+    transition: color 0.3s ease;
 }
-
 
 .form-linkedin {
     display: flex;
@@ -206,26 +202,24 @@ button:hover {
     gap: 12px;
 }
 
-
 .form-linkedin input,
 .form-linkedin textarea {
     padding: 10px;
     font-size: 16px;
     border-radius: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
+    background-color: var(--container-background);
+    color: var(--text-color);
 }
-
 
 .form-linkedin button {
     align-self: flex-end;
     background-color: #0a66c2;
 }
 
-
 .form-linkedin button:hover {
     background-color: #004182;
 }
-
 
 @media (max-width: 600px) {
     .container {
@@ -242,17 +236,18 @@ button:hover {
 }
 
 .btn-adicionar-vaga {
-    background-color: #28a745;
-    color: rgb(30, 30, 46);;
+    background-color: var(--adicionar-vaga-button-background);
+    color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 
 .btn-adicionar-vaga:hover {
-    background-color: #218838;
+    background-color: var(--adicionar-vaga-button-hover-background);
 }
 
 /* Estilos para ações das vagas */
@@ -275,14 +270,16 @@ button:hover {
     padding: 5px;
     border-radius: 3px;
     font-size: 14px;
+    color: var(--text-color);
+    transition: color 0.3s ease;
 }
 
 .btn-editar:hover {
-    background-color: #f0f0f0;
+    background-color: var(--edit-button-hover-background);
 }
 
 .btn-excluir:hover {
-    background-color: #ffe6e6;
+    background-color: var(--delete-button-hover-background);
 }
 
 /* Estilos para informações da vaga */
@@ -296,7 +293,7 @@ button:hover {
 .vaga-info p {
     margin: 0;
     font-size: 13px;
-    color: #666;
+    color: var(--text-color);
 }
 
 .localizacao, .salario, .data-publicacao {
@@ -308,26 +305,27 @@ button:hover {
 .requisitos {
     margin: 10px 0;
     padding: 10px;
-    background-color: rgb(30, 30, 46);
+    background-color: var(--requisitos-background);
     padding-left: 10px!important;
     border-radius: 5px;
-    border-left: 3px solid #007BFF;
+    border-left: 3px solid var(--requisitos-border-left);
+    transition: background-color 0.3s ease;
 }
 
 .requisitos strong {
-    color: #333;
+    color: var(--text-color);
     font-size: 14px;
 }
 
 .requisitos p {
     margin: 5px 0 0 0;
     font-size: 13px;
-    color: #555;
+    color: var(--text-color);
 }
 
 .btn-detalhes {
     align-self: flex-start;
-    background-color: #007BFF;
+    background-color: var(--button-background);
     color: white;
     padding: 8px 16px;
     border: none;
@@ -337,20 +335,22 @@ button:hover {
 }
 
 .btn-detalhes:hover {
-    background-color: #0056b3;
+    background-color: var(--button-hover-background);
 }
 
 /* Estilos para detalhes da vaga */
 .vaga-info-detalhes {
     margin: 15px 0;
     padding: 15px;
-    background-color: rgb(30, 30, 46);
+    background-color: var(--vaga-info-detalhes-background);
     border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .vaga-info-detalhes p {
     margin: 5px 0;
     font-size: 14px;
+    color: var(--text-color);
 }
 
 .descricao-completa, .requisitos-completos {
@@ -358,7 +358,7 @@ button:hover {
 }
 
 .descricao-completa h3, .requisitos-completos h3 {
-    color: #333;
+    color: var(--text-color);
     margin-bottom: 10px;
     font-size: 16px;
 }
@@ -369,7 +369,7 @@ button:hover {
 }
 
 .btn-candidatar {
-    background-color: #28a745;
+    background-color: var(--candidatar-button-background);
     color: white;
     padding: 12px 24px;
     border: none;
@@ -380,7 +380,7 @@ button:hover {
 }
 
 .btn-candidatar:hover {
-    background-color: #218838;
+    background-color: var(--candidatar-button-hover-background);
 }
 
 /* Estilos para formulários */
@@ -392,17 +392,19 @@ button:hover {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-    color: #333;
+    color: var(--form-label-color);
 }
 
 .form-group input,
 .form-group textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--form-input-border);
     border-radius: 4px;
     font-size: 14px;
     box-sizing: border-box;
+    background-color: var(--container-background);
+    color: var(--text-color);
 }
 
 .form-group textarea {
@@ -426,21 +428,21 @@ button:hover {
 }
 
 .form-actions button[type="button"] {
-    background-color: #6c757d;
+    background-color: var(--form-cancel-button-background);
     color: white;
 }
 
 .form-actions button[type="button"]:hover {
-    background-color: #5a6268;
+    background-color: var(--form-cancel-button-hover-background);
 }
 
 .form-actions button[type="submit"] {
-    background-color: #007BFF;
+    background-color: var(--form-submit-button-background);
     color: white;
 }
 
 .form-actions button[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: var(--form-submit-button-hover-background);
 }
 
 /* Estilos para filtros */
@@ -459,6 +461,12 @@ button:hover {
 .filtros button {
     padding: 10px 20px;
     white-space: nowrap;
+    background-color: var(--filter-button-background);
+    color: white;
+}
+
+.filtros button:hover {
+    background-color: var(--filter-button-hover-background);
 }
 
 /* Responsividade */
@@ -483,4 +491,31 @@ button:hover {
         align-self: flex-end;
     }
 }
+
+/* Botão flutuante de adicionar vaga */
+.btn-adicionar-vaga-flutuante {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: var(--adicionar-vaga-button-background);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    z-index: 1000;
+}
+
+.btn-adicionar-vaga-flutuante:hover {
+    background-color: var(--adicionar-vaga-button-hover-background);
+    transform: translateY(-2px);
+}
+
 

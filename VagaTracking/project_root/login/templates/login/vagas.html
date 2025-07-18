@@ -14,11 +14,6 @@ document.body.classList.add('page-layout');
 
 <div class="vagas-header">
     <h1>Vagas Disponíveis</h1>
-    {% if user.is_authenticated and user.profile.role == 'RH' %}
-        <button type="button" class="btn-adicionar-vaga" onclick="abrirModalAdicionarVaga()">
-            + Adicionar Nova Vaga
-        </button>
-    {% endif %}
 </div>
 
 <form method="get" class="filtros">
@@ -65,6 +60,13 @@ document.body.classList.add('page-layout');
         <p style="text-align: center; color: var(--text-muted); grid-column: 1 / -1;">Nenhuma vaga encontrada.</p>
     {% endif %}
 </div>
+
+<!-- Botão flutuante de adicionar vaga -->
+{% if user.is_authenticated and user.profile.role == 'RH' %}
+<button type="button" class="btn-adicionar-vaga-flutuante" onclick="abrirModalAdicionarVaga()">
+    +
+</button>
+{% endif %}
 
 <!-- Modal para detalhes da vaga -->
 <div id="modal-detalhes" class="modal">
@@ -128,7 +130,7 @@ function mostrarDetalhes(vagaId) {
         <div class="vaga-info-detalhes">
             <p><strong>📍 Localização:</strong> ${vaga.location}</p>
             ${vaga.salary ? `<p><strong>💰 Salário:</strong> ${vaga.salary}</p>` : ''}
-            <p><strong>📅 Publicado em:</strong> ${vaga.data_publication}</p>
+            ${vaga.data_publication ? `<p><strong>📅 Publicado em:</strong> ${vaga.data_publication}</p>` : ''}
         </div>
         <div class="descricao-completa">
             <h3>Descrição</h3>

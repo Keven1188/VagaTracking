@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <title>{% block title %}Meu Site{% endblock %}</title>
 
-  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/theme.css' %}">
   <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
   {% block extra_css %}{% endblock %}
 </head>
@@ -25,6 +25,21 @@
     {% endfor %}
     {% block content %}{% endblock %}
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme) {
+            document.body.classList.add(currentTheme);
+        } else {
+            // Tema padrão é claro (light-mode)
+            document.body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light-mode');
+        }
+    });
+  </script>
 </body>
 </html>
-</html>
+
+

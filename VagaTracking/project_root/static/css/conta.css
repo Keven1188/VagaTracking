@@ -267,3 +267,15 @@
     }
 }
 
+
+/* Estilos para o botão de tema */
+.btn-theme {
+    background-color: #6f42c1;
+    color: white;
+}
+
+.btn-theme:hover {
+    background-color: #5a32a3;
+    transform: translateY(-1px);
+}
+
